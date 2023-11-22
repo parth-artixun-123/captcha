@@ -72,7 +72,7 @@ class CaptchaServiceProvider extends ServiceProvider
         );
 
         // Bind captcha
-        $this->app->bind('captcha', function ($app) {
+        $this->app->bind('mews_captcha', function ($app) {
             return new Captcha(
                 $app['Illuminate\Filesystem\Filesystem'],
                 $app['Illuminate\Contracts\Config\Repository'],
