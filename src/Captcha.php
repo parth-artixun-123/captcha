@@ -346,7 +346,7 @@ class Captcha
         $hash = $this->hasher->make($key);
         if($this->encrypt) $hash = Crypt::encrypt($hash);
 
-        $this->session->put('captcha', [
+        $this->session->put('mews_captcha', [
             'sensitive' => $this->sensitive,
             'key' => $hash,
             'encrypt' => $this->encrypt
@@ -468,16 +468,16 @@ class Captcha
      */
     public function check(string $value): bool
     {
-        if (!$this->session->has('captcha')) {
+        if (!$this->session->has('mews_captcha')) {
             return false;
         }
 
-        $key = $this->session->get('captcha.key');
-        $sensitive = $this->session->get('captcha.sensitive');
-        $encrypt = $this->session->get('captcha.encrypt');
+        $key = $this->session->get('mews_captcha.key');
+        $sensitive = $this->session->get('mews_captcha.sensitive');
+        $encrypt = $this->session->get('mews_captcha.encrypt');
 
         if (!Cache::pull($this->get_cache_key($key))) {
-            $this->session->remove('captcha');
+            $this->session->remove('mews_captcha');
             return false;
         }
 
@@ -489,7 +489,7 @@ class Captcha
         $check = $this->hasher->check($value, $key);
         // if verify pass,remove session
         if ($check) {
-            $this->session->remove('captcha');
+            $this->session->remove('mews_captcha');
         }
 
         return $check;
